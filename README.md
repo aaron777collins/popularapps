@@ -52,12 +52,11 @@ Aaron's own box and it's free to run there. To wire it up:
    - Pipeline script from SCM
    - SCM: Git, repo URL `https://github.com/aaron777collins/popularapps.git`
    - Script path: `Jenkinsfile`
-3. **Check the agent has Node 20+.** The Jenkinsfile runs `node
-   scripts/fetch-data.mjs` directly on whatever agent picks up the job (`agent
-   any`). If that agent is a stripped-down container without Node installed,
-   either install Node in that image or change the `agent` block in
-   `Jenkinsfile` to a Docker agent (e.g. `agent { docker { image 'node:22' }
-   }`) — this wasn't verified end-to-end, confirm on the first run.
+3. **Node.** The Jenkinsfile pins `agent { label 'built-in' }` — it runs
+   on the Jenkins controller itself, not on `agent-1`, because the
+   controller's custom image has Node 20 baked in and `agent-1` (a bare
+   `jenkins/inbound-agent` image) doesn't. Confirmed by hitting `node: not
+   found` on `agent-1` on the first real run and pinning it after.
 4. Trigger a build manually once to confirm it pushes correctly, then let the
    `cron('H 6 * * *')` schedule in the Jenkinsfile take over.
 

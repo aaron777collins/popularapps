@@ -12,7 +12,7 @@
 // GitHub's default GITHUB_TOKEN) triggers deploy-pages.yml normally.
 
 pipeline {
-  agent any
+  agent { label 'built-in' }  // needs Node 20 (baked into the controller's image); the jenkins-agent/agent-1 worker doesn't have it
 
   triggers {
     // Once a day. 'H' picks a stable-but-unpredictable minute in the hour
