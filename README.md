@@ -41,29 +41,27 @@ rank-history charts.
 The daily fetch runs on Jenkins instead of GitHub Actions, because dev3 is
 Aaron's own box and it's free to run there. To wire it up:
 
-1. **Add the deploy key as a Jenkins credential.**
-   A dedicated, write-scoped SSH deploy key for this repo already exists (public
-   half registered on GitHub — or waiting to be, if that step hasn't been
-   approved yet). Grab the private half wherever it was generated, then in
-   Jenkins: **Manage Jenkins → Credentials → (System) → Global credentials →
-   Add Credentials**
-   - Kind: `SSH Username with private key`
-   - ID: `popularapps-deploy-key` (must match exactly — the Jenkinsfile
+1. **Create a GitHub PAT.** github.com → Settings → Developer settings →
+   Fine-grained tokens → Generate new token. Repository access: only
+   `popularapps`. Permissions: Contents → Read and write.
+2. **Add it as a Jenkins credential.** Manage Jenkins → Credentials →
+   System → Global credentials → Add Credentials
+   - Kind: `Username with password`
+   - Username: `x-access-token`
+   - Password: the PAT
+   - ID: `popularapps-github-pat` (must match exactly — the Jenkinsfile
      references this ID)
-   - Username: `git`
-   - Private key: paste the private key contents
-2. **Create the job.** New Item → Pipeline (or Multibranch Pipeline) →
+3. **Create the job.** New Item → Pipeline (or Multibranch Pipeline) →
    - Pipeline script from SCM
-   - SCM: Git, repo URL `git@github.com:aaron777collins/popularapps.git`,
-     credential: the one from step 1
+   - SCM: Git, repo URL `https://github.com/aaron777collins/popularapps.git`
    - Script path: `Jenkinsfile`
-3. **Check the agent has Node 20+.** The Jenkinsfile runs `node
+4. **Check the agent has Node 20+.** The Jenkinsfile runs `node
    scripts/fetch-data.mjs` directly on whatever agent picks up the job (`agent
    any`). If that agent is a stripped-down container without Node installed,
    either install Node in that image or change the `agent` block in
    `Jenkinsfile` to a Docker agent (e.g. `agent { docker { image 'node:22' }
    }`) — this wasn't verified end-to-end, confirm on the first run.
-4. Trigger a build manually once to confirm it pushes correctly, then let the
+5. Trigger a build manually once to confirm it pushes correctly, then let the
    `cron('H 6 * * *')` schedule in the Jenkinsfile take over.
 
 ## Running it locally

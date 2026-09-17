@@ -2,14 +2,15 @@
 //
 // One-time setup on the Jenkins side (see README's "Jenkins setup" section
 // for the full walkthrough):
-//   1. An SSH credential with write access to this repo, ID: popularapps-deploy-key
+//   1. A GitHub PAT credential (kind: Username with password, username
+//      x-access-token, password the PAT), ID: popularapps-github-pat
 //   2. A Pipeline job (or Multibranch Pipeline) pointing at this repo, reading
 //      this Jenkinsfile.
 //
 // This replaces the schedule that used to live in
 // .github/workflows/update-data.yml (that workflow now only runs on manual
-// workflow_dispatch, as a fallback). Pushing here with a real credential
-// (not GitHub's default GITHUB_TOKEN) triggers deploy-pages.yml normally.
+// workflow_dispatch, as a fallback). Pushing here with a real PAT (not
+// GitHub's default GITHUB_TOKEN) triggers deploy-pages.yml normally.
 
 pipeline {
   agent any
@@ -25,10 +26,6 @@ pipeline {
     timestamps()
     disableConcurrentBuilds()
     timeout(time: 20, unit: 'MINUTES')
-  }
-
-  environment {
-    GIT_SSH_REMOTE = 'git@github.com:aaron777collins/popularapps.git'
   }
 
   stages {
@@ -47,12 +44,16 @@ pipeline {
 
     stage('Commit and push if changed') {
       steps {
-        sshagent(credentials: ['popularapps-deploy-key']) {
+        withCredentials([usernamePassword(
+          credentialsId: 'popularapps-github-pat',
+          usernameVariable: 'GIT_USER',
+          passwordVariable: 'GIT_TOKEN'
+        )]) {
           sh '''
             set -e
             git config user.name "jenkins-bot"
             git config user.email "jenkins@aaroncollins.info"
-            git remote set-url origin "$GIT_SSH_REMOTE"
+            git remote set-url origin "https://${GIT_USER}:${GIT_TOKEN}@github.com/aaron777collins/popularapps.git"
 
             git add data/latest.json data/history.json
 
@@ -62,6 +63,9 @@ pipeline {
               git commit -m "chore: update app store data (jenkins/dev3)"
               git push origin HEAD:main
             fi
+
+            # Don't leave the token sitting in the remote URL on disk.
+            git remote set-url origin "https://github.com/aaron777collins/popularapps.git"
           '''
         }
       }
