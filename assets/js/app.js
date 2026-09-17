@@ -241,8 +241,13 @@ function currentTheme() {
 function updateThemeToggle() {
   const next = currentTheme() === 'dark' ? 'light' : 'dark';
   els.themeToggle.setAttribute('aria-label', `Switch to ${next} theme`);
-  els.iconSun.hidden = next === 'dark';
-  els.iconMoon.hidden = next === 'light';
+  if (next === 'dark') {
+    els.iconSun.removeAttribute('hidden');
+    els.iconMoon.setAttribute('hidden', '');
+  } else {
+    els.iconSun.setAttribute('hidden', '');
+    els.iconMoon.removeAttribute('hidden');
+  }
 }
 
 function updateThemeColorMeta() {
