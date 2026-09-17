@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Rankwatch</title>
+  <meta name="description" content="Live App Store chart positions, by country and category.">
+  <meta id="meta-theme-light" name="theme-color" media="(prefers-color-scheme: light)" content="#F5F6FA">
+  <meta id="meta-theme-dark" name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1526">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('rankwatch-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      } catch (err) {
+        /* localStorage unavailable, fall back to system preference */
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <h1 class="wordmark">Rankwatch</h1>
+        <p class="tagline">Live App Store chart positions, by country and category.</p>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="filter-strip" aria-label="Chart filters">
+    <div class="container filters-grid">
+      <div class="field field-country">
+        <label class="field-label" for="country-select">Country</label>
+        <div class="select-wrap">
+          <select id="country-select" class="select"></select>
+          <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="field field-chart">
+        <span class="field-label" id="chart-group-label">Chart</span>
+        <div class="segmented" id="chart-segments" role="group" aria-labelledby="chart-group-label">
+          <span class="segmented-indicator" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="field field-category">
+        <label class="field-label" for="category-input">Category</label>
+        <div class="combobox" id="category-combobox">
+          <input id="category-input" class="combo-input" type="text" role="combobox"
+                 aria-expanded="false" aria-controls="category-listbox" aria-autocomplete="list"
+                 autocomplete="off" spellcheck="false" placeholder="Search categories">
+          <svg class="combo-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <ul class="combo-listbox" id="category-listbox" role="listbox" aria-label="Categories" hidden></ul>
+        </div>
+      </div>
+
+      <div class="field field-search">
+        <label class="field-label" for="search-input">Search</label>
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="search-input" class="search-input" type="search" autocomplete="off"
+                 placeholder="Search apps or developers">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="app" class="container app-main">
+    <div id="stats" aria-busy="true"></div>
+    <div class="main-split">
+      <section class="panel panel-list" aria-label="Ranked apps">
+        <div id="list" aria-busy="true"></div>
+      </section>
+      <aside class="panel panel-movers" aria-label="Movers">
+        <div id="movers" aria-busy="true"></div>
+      </aside>
+    </div>
+  </main>
+
+  <noscript>
+    <p class="noscript-note">Rankwatch needs JavaScript to load and display chart data.</p>
+  </noscript>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
