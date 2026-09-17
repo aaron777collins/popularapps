@@ -8,6 +8,9 @@ import { fileURLToPath } from "node:url";
 
 const COUNTRIES = [
   { code: "us", name: "United States" },
+  { code: "gb", name: "United Kingdom" },
+  { code: "ca", name: "Canada" },
+  { code: "au", name: "Australia" },
 ];
 
 const CHARTS = [

@@ -24,7 +24,7 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
-    timeout(time: 20, unit: 'MINUTES')
+    timeout(time: 40, unit: 'MINUTES')  // 4 countries x 78 requests now, more headroom than the original 1-country estimate
   }
 
   stages {

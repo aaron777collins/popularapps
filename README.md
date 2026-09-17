@@ -7,9 +7,9 @@ Live App Store chart positions, by country and category — filterable, at a gla
 ## What it does
 
 Rankwatch pulls the public iTunes charts feed daily and shows the current
-Top Free, Top Paid, and Top Grossing apps for the US App Store, broken out across
-26 categories, up to 100 apps deep per list (Apple's feed hard-caps at 100 — no
-key or workaround gets you further). You can filter by chart type and category,
+Top Free, Top Paid, and Top Grossing apps across 4 App Store storefronts (US,
+UK, Canada, Australia) and 26 categories each, up to 100 apps deep per list
+(Apple's feed hard-caps at 100 — no key or workaround gets you further). You can filter by chart type and category,
 search by app or developer name, sort by rank/name/price, and see:
 
 - **Overview stats** — apps in view, category count, last updated time, free vs.
@@ -79,7 +79,10 @@ node scripts/fetch-data.mjs
 ## Extending it
 
 - **More countries**: add entries to the `COUNTRIES` array in
-  `scripts/fetch-data.mjs`. The frontend already reads the country list from the
-  data file, so no UI changes are needed.
+  `scripts/fetch-data.mjs` (ISO country code Apple's storefronts use, e.g.
+  `de`, `fr`, `jp`). The frontend already reads the country list from the data
+  file, so no UI changes are needed — but each additional country adds ~78
+  requests to the run (~2-3 min at current throughput), so bump the
+  `Jenkinsfile`'s `timeout(...)` if you add several at once.
 - **More categories**: Apple's genre IDs are listed at the top of
   `scripts/fetch-data.mjs`.
