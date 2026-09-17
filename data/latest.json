@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T04:58:11.354Z",
+  "generatedAt": "2026-09-17T05:04:11.078Z",
   "countries": [
     {
       "code": "us",
@@ -6113,7 +6113,7 @@
             "price": 0,
             "currency": "USD",
             "releaseDate": "2026-08-28",
-            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/10/90/f8/1090f888-ad3d-449e-d3fc-292472a64b9a/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/100x100bb.png",
+            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/54/2a/06/542a062f-37c1-f878-285b-69c868b6fcff/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/100x100bb.png",
             "url": "https://apps.apple.com/us/app/flock-fantasy/id6799588005?uo=2",
             "categoryId": "6004",
             "categoryName": "Sports"
