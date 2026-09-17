@@ -54,7 +54,7 @@ const CATEGORIES = [
 
 const REQUEST_PAUSE_MS = 900;
 const RETRY_PAUSE_MS = 5000;
-const HISTORY_TOP_N = 20;
+const HISTORY_TOP_N = 100;
 const HISTORY_MAX_ENTRIES = 30;
 
 const dataDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "data");

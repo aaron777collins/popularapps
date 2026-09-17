@@ -1,8 +1,9 @@
 name: Update App Store Data
 
+# The daily schedule now lives on Jenkins (dev3) — see /Jenkinsfile. This
+# workflow is kept as a manual fallback (workflow_dispatch only) in case
+# Jenkins is down or you want an on-demand refresh from GitHub directly.
 on:
-  schedule:
-    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
