@@ -2,8 +2,7 @@
 //
 // One-time setup on the Jenkins side (see README's "Jenkins setup" section
 // for the full walkthrough):
-//   1. A GitHub PAT credential (kind: Username with password, username
-//      x-access-token, password the PAT), ID: popularapps-github-pat
+//   1. Uses the existing shared "github-credentials" credential in Jenkins
 //   2. A Pipeline job (or Multibranch Pipeline) pointing at this repo, reading
 //      this Jenkinsfile.
 //
@@ -45,7 +44,7 @@ pipeline {
     stage('Commit and push if changed') {
       steps {
         withCredentials([usernamePassword(
-          credentialsId: 'popularapps-github-pat',
+          credentialsId: 'github-credentials',
           usernameVariable: 'GIT_USER',
           passwordVariable: 'GIT_TOKEN'
         )]) {
